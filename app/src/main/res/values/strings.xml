@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Student Remainder App</string>
+    <string name="add_task">Add/Edit Task</string>
+</resources>
