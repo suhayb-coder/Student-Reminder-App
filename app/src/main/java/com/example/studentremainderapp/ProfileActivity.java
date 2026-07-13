@@ -11,10 +11,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        sessionManager = new SessionManager(this);
+        
+        TextView tvUserName = findViewById(R.id.tvUserName);
+        TextView tvUserEmail = findViewById(R.id.tvUserEmail);
+        
+        tvUserName.setText(sessionManager.getName());
+        tvUserEmail.setText(sessionManager.getEmail());
 
         setupProfileOptions();
 
@@ -39,8 +49,11 @@ public class ProfileActivity extends AppCompatActivity {
                 .setTitle("Log Out")
                 .setMessage("Are you sure you want to log out of your account?")
                 .setPositiveButton("Log Out", (dialog, which) -> {
+                    sessionManager.logoutUser();
                     Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
-                    // In a real app, clear session and go to login
+                    Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                     finish(); 
                 })
                 .setNegativeButton("Cancel", null)

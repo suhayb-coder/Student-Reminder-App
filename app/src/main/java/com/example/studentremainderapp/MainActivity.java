@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView emptyStateText, tvTaskSummary, tvProgressMsg;
     private ProgressBar weeklyProgressBar;
     private TabLayout filterTabs;
+    private SessionManager sessionManager;
+    private TextView tvGreeting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +40,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         dbHelper = new DatabaseHelper(this);
+        sessionManager = new SessionManager(this);
+        
         recyclerView = findViewById(R.id.recyclerView);
         emptyStateText = findViewById(R.id.emptyStateText);
         tvProgressMsg = findViewById(R.id.tvProgressMsg);
+        tvGreeting = findViewById(R.id.tvGreeting);
         weeklyProgressBar = findViewById(R.id.weeklyProgressBar);
         filterTabs = findViewById(R.id.filterTabs);
         FloatingActionButton fab = findViewById(R.id.fabAdd);
+
+        tvGreeting.setText("Hello, " + sessionManager.getName());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         taskAdapter = new TaskAdapter(new ArrayList<>(), this);

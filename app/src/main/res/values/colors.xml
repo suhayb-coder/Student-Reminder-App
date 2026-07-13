@@ -2,17 +2,33 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="input_background">#F5F7F9</color>
-    <color name="primary_blue">#1A73E8</color>
-    <color name="text_hint">#9E9E9E</color>
-    <color name="text_label">#1A73E8</color>
-    <color name="low_priority">#4CAF50</color>
-    <color name="medium_priority">#FF9800</color>
-    <color name="high_priority">#F44336</color>
-    <color name="low_priority_bg">#E3F2FD</color>
-    <color name="medium_priority_bg">#FFF3E0</color>
-    <color name="high_priority_bg">#FFEBEE</color>
-    <color name="low_priority_text">#1976D2</color>
-    <color name="medium_priority_text">#E65100</color>
-    <color name="high_priority_text">#C62828</color>
+
+    <!-- Primary Branding -->
+    <color name="primary_color">#6366F1</color> <!-- Modern Indigo -->
+    <color name="primary_light">#EEF2FF</color>
+    <color name="secondary_color">#0EA5E9</color> <!-- Sky Blue -->
+
+    <!-- Backgrounds -->
+    <color name="screen_bg_start">#F8FAFC</color>
+    <color name="screen_bg_end">#F1F5F9</color>
+    <color name="card_bg">#FFFFFF</color>
+    <color name="input_background">#F1F5F9</color>
+
+    <!-- Priorities (Vibrant) -->
+    <color name="low_priority">#10B981</color> <!-- Emerald -->
+    <color name="low_priority_bg">#ECFDF5</color>
+    <color name="low_priority_text">#047857</color>
+
+    <color name="medium_priority">#F59E0B</color> <!-- Amber -->
+    <color name="medium_priority_bg">#FFFBEB</color>
+    <color name="medium_priority_text">#B45309</color>
+
+    <color name="high_priority">#EF4444</color> <!-- Rose/Red -->
+    <color name="high_priority_bg">#FEF2F2</color>
+    <color name="high_priority_text">#B91C1C</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#1E293B</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_hint">#94A3B8</color>
 </resources>

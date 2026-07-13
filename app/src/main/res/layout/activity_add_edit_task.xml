@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA"
+    android:background="@drawable/bg_gradient"
     android:orientation="vertical">
 
     <!-- Custom Top Bar -->
@@ -20,9 +20,7 @@
             android:padding="12dp"
             android:src="@drawable/ic_close"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:contentDescription="Close" />
+            app:tint="@color/primary_color" />
 
         <TextView
             android:id="@+id/tvHeaderTitle"
@@ -30,242 +28,275 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="Edit Task"
-            android:textColor="@color/primary_blue"
+            android:textColor="@color/primary_color"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/btnDelete"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:padding="8dp"
+            android:padding="10dp"
             android:src="@drawable/ic_delete"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/high_priority"
             android:visibility="gone" />
     </RelativeLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp">
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp">
 
-                <!-- Task Title -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Task Title"
-                    android:textColor="@color/primary_blue"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/etTitle"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_input_field"
-                    android:hint="e.g., Chemistry Lab Report"
-                    android:inputType="textCapSentences"
-                    android:paddingHorizontal="16dp" />
-
-                <!-- Description -->
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Description"
-                    android:textColor="@color/primary_blue"
-                    android:textStyle="bold" />
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
-                <EditText
-                    android:id="@+id/etDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_input_field"
-                    android:gravity="top"
-                    android:hint="Add additional details or notes here..."
-                    android:inputType="textMultiLine"
-                    android:padding="16dp" />
-
-                <!-- Due Date -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Due Date"
-                    android:textColor="@color/primary_blue"
-                    android:textStyle="bold" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_input_field"
-                    android:paddingHorizontal="16dp">
-
-                    <ImageView
-                        android:id="@+id/ivCalendarIcon"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_calendar" />
+                    <!-- Task Title -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TASK TITLE"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1" />
 
                     <EditText
-                        android:id="@+id/etDate"
+                        android:id="@+id/etTitle"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toEndOf="@id/ivCalendarIcon"
-                        android:background="@android:color/transparent"
-                        android:focusable="false"
-                        android:hint="mm/dd/yyyy"
-                        android:paddingHorizontal="12dp" />
-                </RelativeLayout>
+                        android:layout_height="56dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_input_field"
+                        android:hint="e.g., Chemistry Lab Report"
+                        android:inputType="textCapSentences"
+                        android:paddingHorizontal="16dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp" />
 
-                <!-- Due Time -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Due Time"
-                    android:textColor="@color/primary_blue"
-                    android:textStyle="bold" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_input_field"
-                    android:paddingHorizontal="16dp">
-
-                    <ImageView
-                        android:id="@+id/ivClockIcon"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_clock" />
+                    <!-- Description -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="DESCRIPTION"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1" />
 
                     <EditText
-                        android:id="@+id/etTime"
+                        android:id="@+id/etDescription"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toEndOf="@id/ivClockIcon"
-                        android:background="@android:color/transparent"
-                        android:focusable="false"
-                        android:hint="--:-- --"
-                        android:paddingHorizontal="12dp" />
-                </RelativeLayout>
+                        android:layout_height="120dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_input_field"
+                        android:gravity="top"
+                        android:hint="Add additional details or notes here..."
+                        android:inputType="textMultiLine"
+                        android:padding="16dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp" />
 
-                <!-- Priority -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Priority"
-                    android:textColor="@color/primary_blue"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:id="@+id/priorityToggleGroup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:singleSelection="true"
-                    app:selectionRequired="true">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnLow"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Low"
-                        android:textAllCaps="false"
-                        android:textColor="@color/chip_text_selector"
-                        app:backgroundTint="@color/chip_bg_low"
-                        app:cornerRadius="12dp"
-                        app:icon="@drawable/dot_low"
-                        app:iconGravity="textStart"
-                        app:strokeColor="@color/chip_stroke_low" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnMedium"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Medium"
-                        android:textAllCaps="false"
-                        android:textColor="@color/chip_text_selector"
-                        app:backgroundTint="@color/chip_bg_medium"
-                        app:cornerRadius="12dp"
-                        app:icon="@drawable/dot_medium"
-                        app:iconGravity="textStart"
-                        app:strokeColor="@color/chip_stroke_medium" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnHigh"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="High"
-                        android:textAllCaps="false"
-                        android:textColor="@color/chip_text_selector"
-                        app:backgroundTint="@color/chip_bg_high"
-                        app:cornerRadius="12dp"
-                        app:icon="@drawable/dot_high"
-                        app:iconGravity="textStart"
-                        app:strokeColor="@color/chip_stroke_high" />
-
-                </com.google.android.material.button.MaterialButtonToggleGroup>
-
-                <!-- Illustration Image -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_marginTop="24dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="0dp">
-
-                    <ImageView
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_launcher_background"
-                        android:background="#E0E6ED" />
-                </androidx.cardview.widget.CardView>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSave"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginTop="24dp"
-                    android:backgroundTint="@color/primary_blue"
-                    android:text="Save Task"
-                    android:textAllCaps="false"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="16dp"
-                    app:icon="@drawable/ic_check"
-                    app:iconGravity="textStart"
-                    app:iconPadding="12dp"
-                    app:iconSize="24dp"
-                    app:iconTint="@android:color/black" />
+                        <!-- Due Date -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="8dp">
 
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </ScrollView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="DUE DATE"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:letterSpacing="0.1" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="56dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/bg_input_field"
+                                android:paddingHorizontal="16dp">
+
+                                <ImageView
+                                    android:id="@+id/ivCalendarIcon"
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_centerVertical="true"
+                                    android:src="@drawable/ic_calendar"
+                                    app:tint="@color/text_secondary" />
+
+                                <EditText
+                                    android:id="@+id/etDate"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_toEndOf="@id/ivCalendarIcon"
+                                    android:background="@android:color/transparent"
+                                    android:focusable="false"
+                                    android:hint="Date"
+                                    android:paddingHorizontal="10dp"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="14sp" />
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <!-- Due Time -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="DUE TIME"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:letterSpacing="0.1" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="56dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/bg_input_field"
+                                android:paddingHorizontal="16dp">
+
+                                <ImageView
+                                    android:id="@+id/ivClockIcon"
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_centerVertical="true"
+                                    android:src="@drawable/ic_clock"
+                                    app:tint="@color/text_secondary" />
+
+                                <EditText
+                                    android:id="@+id/etTime"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_toEndOf="@id/ivClockIcon"
+                                    android:background="@android:color/transparent"
+                                    android:focusable="false"
+                                    android:hint="Time"
+                                    android:paddingHorizontal="10dp"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="14sp" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Priority -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="PRIORITY"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1" />
+
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/priorityToggleGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:singleSelection="true"
+                        app:selectionRequired="true">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnLow"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Low"
+                            android:textAllCaps="false"
+                            android:textColor="@color/low_priority_text"
+                            app:backgroundTint="@color/low_priority_bg"
+                            app:cornerRadius="12dp"
+                            app:icon="@drawable/dot_low"
+                            app:iconGravity="textStart"
+                            app:strokeColor="@color/low_priority" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnMedium"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Med"
+                            android:textAllCaps="false"
+                            android:textColor="@color/medium_priority_text"
+                            app:backgroundTint="@color/medium_priority_bg"
+                            app:cornerRadius="12dp"
+                            app:icon="@drawable/dot_medium"
+                            app:iconGravity="textStart"
+                            app:strokeColor="@color/medium_priority" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnHigh"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="High"
+                            android:textAllCaps="false"
+                            android:textColor="@color/high_priority_text"
+                            app:backgroundTint="@color/high_priority_bg"
+                            app:cornerRadius="12dp"
+                            app:icon="@drawable/dot_high"
+                            app:iconGravity="textStart"
+                            app:strokeColor="@color/high_priority" />
+
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSave"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="32dp"
+                        android:backgroundTint="@color/primary_color"
+                        android:text="Save Task"
+                        android:textAllCaps="false"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_check"
+                        app:iconGravity="textStart"
+                        app:iconPadding="12dp"
+                        app:iconSize="20dp"
+                        app:elevation="4dp" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

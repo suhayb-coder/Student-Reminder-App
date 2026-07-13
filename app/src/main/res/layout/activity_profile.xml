@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA">
+    android:background="@drawable/bg_gradient">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,16 +24,14 @@
                 android:padding="12dp"
                 android:src="@drawable/ic_close"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="Close" />
+                app:tint="@color/primary_color" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="My Profile"
-                android:textColor="@color/primary_blue"
+                android:textColor="@color/primary_color"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -43,22 +41,31 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="32dp">
+            android:padding="40dp">
 
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/ic_account"
-                app:tint="@color/primary_blue" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                app:cardCornerRadius="60dp"
+                app:cardElevation="8dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_account"
+                    android:padding="20dp"
+                    android:background="@color/primary_light"
+                    app:tint="@color/primary_color" />
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/tvUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="20dp"
                 android:text="Alex Johnson"
-                android:textColor="#333333"
-                android:textSize="24sp"
+                android:textColor="@color/text_primary"
+                android:textSize="26sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -67,16 +74,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="alex.johnson@example.com"
-                android:textColor="#888888"
+                android:textColor="@color/text_secondary"
                 android:textSize="16sp" />
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="2dp">
+            android:layout_marginHorizontal="24dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -88,22 +95,27 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="60dp"
             android:layout_margin="32dp"
-            android:backgroundTint="#FFEBEE"
+            android:backgroundTint="@color/high_priority_bg"
             android:text="Log Out"
             android:textAllCaps="false"
-            android:textColor="#D32F2F"
+            android:textColor="@color/high_priority_text"
             android:textSize="18sp"
             android:textStyle="bold"
             app:cornerRadius="16dp"
             app:icon="@android:drawable/ic_lock_power_off"
             app:iconGravity="textStart"
             app:iconPadding="12dp"
-            app:iconTint="#D32F2F" />
+            app:iconTint="@color/high_priority_text" />
 
     </LinearLayout>
 
