@@ -89,6 +89,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count > 0;
     }
 
+    public boolean isEmailExists(String email, String excludeEmail) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection;
+        String[] selectionArgs;
+        if (excludeEmail != null) {
+            selection = COLUMN_USER_EMAIL + " = ? AND " + COLUMN_USER_EMAIL + " != ?";
+            selectionArgs = new String[]{email, excludeEmail};
+        } else {
+            selection = COLUMN_USER_EMAIL + " = ?";
+            selectionArgs = new String[]{email};
+        }
+        Cursor cursor = db.query(TABLE_USERS, new String[]{COLUMN_USER_ID}, selection, selectionArgs, null, null, null);
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
+    }
+
     public String getUserName(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_USERS, new String[]{COLUMN_USER_NAME}, COLUMN_USER_EMAIL + "=?", new String[]{email}, null, null, null);
@@ -98,6 +115,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return name;
         }
         return "User";
+    }
+
+    public int updateUser(String oldEmail, String newName, String newEmail) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_NAME, newName);
+        values.put(COLUMN_USER_EMAIL, newEmail);
+        return db.update(TABLE_USERS, values, COLUMN_USER_EMAIL + " = ?", new String[]{oldEmail});
     }
 
     // --- TASK METHODS ---

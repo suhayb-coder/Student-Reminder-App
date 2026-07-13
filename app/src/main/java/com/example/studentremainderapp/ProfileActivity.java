@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ProfileActivity extends AppCompatActivity {
 
     private SessionManager sessionManager;
+    private TextView tvUserName, tvUserEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +21,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         
-        TextView tvUserName = findViewById(R.id.tvUserName);
-        TextView tvUserEmail = findViewById(R.id.tvUserEmail);
+        tvUserName = findViewById(R.id.tvUserName);
+        tvUserEmail = findViewById(R.id.tvUserEmail);
         
-        tvUserName.setText(sessionManager.getName());
-        tvUserEmail.setText(sessionManager.getEmail());
+        updateUI();
 
         setupProfileOptions();
 
@@ -37,11 +37,27 @@ public class ProfileActivity extends AppCompatActivity {
         findViewById(R.id.btnLogout).setOnClickListener(v -> showLogoutDialog());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
+    private void updateUI() {
+        tvUserName.setText(sessionManager.getName());
+        tvUserEmail.setText(sessionManager.getEmail());
+    }
+
     private void setupProfileOptions() {
         // Edit Profile option
         View editProfile = findViewById(R.id.optionEditProfile);
         ((TextView) editProfile.findViewById(R.id.tvSettingTitle)).setText("Edit Personal Info");
         ((ImageView) editProfile.findViewById(R.id.ivSettingIcon)).setImageResource(android.R.drawable.ic_menu_edit);
+        
+        editProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void showLogoutDialog() {

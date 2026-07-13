@@ -63,6 +63,12 @@
             android:label="Profile"
             android:parentActivityName=".MainActivity" />
 
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false"
+            android:label="Edit Profile"
+            android:parentActivityName=".ProfileActivity" />
+
         <!-- Broadcast Receivers for Alarms and Boot -->
         <receiver
             android:name=".ReminderReceiver"

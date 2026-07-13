@@ -26,6 +26,12 @@ public class SessionManager {
         editor.commit();
     }
 
+    public void updateSession(String name, String email) {
+        editor.putString(KEY_NAME, name);
+        editor.putString(KEY_EMAIL, email);
+        editor.commit();
+    }
+
     public boolean isLoggedIn() {
         return pref.getBoolean(KEY_IS_LOGGED_IN, false);
     }
