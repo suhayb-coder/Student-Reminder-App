@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Settings"
+                android:text="@string/settings"
                 android:textColor="@color/primary_color"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -44,6 +44,7 @@
                 android:src="@drawable/ic_account"
                 android:padding="4dp"
                 android:background="@drawable/bg_badge_low"
+                android:scaleType="centerCrop"
                 app:tint="@color/primary_color" />
         </RelativeLayout>
 
@@ -65,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:layout_marginStart="8dp"
-                    android:text="ACCOUNT"
+                    android:text="@string/account"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     android:textStyle="bold"
@@ -95,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:layout_marginStart="8dp"
-                    android:text="GENERAL"
+                    android:text="@string/general"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     android:textStyle="bold"
@@ -125,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:layout_marginStart="8dp"
-                    android:text="SUPPORT"
+                    android:text="@string/support"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     android:textStyle="bold"
@@ -160,7 +161,8 @@
         android:layout_gravity="bottom"
         android:layout_margin="16dp"
         app:cardCornerRadius="24dp"
-        app:cardElevation="12dp">
+        app:cardElevation="12dp"
+        app:cardBackgroundColor="@color/card_bg">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -206,7 +208,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="Settings"
+                    android:text="@string/settings"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
             </LinearLayout>

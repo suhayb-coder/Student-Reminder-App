@@ -17,11 +17,32 @@ public class NotificationHelper {
     public static final String CHANNEL_NAME = "Student Task Reminders";
 
     public static void showNotification(Context context, String title, String message, int taskId) {
+        SessionManager sessionManager = new SessionManager(context);
+        if (!sessionManager.isNotificationsEnabled()) {
+            return;
+        }
+
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        // Get user chosen sound
+        String soundUriStr = sessionManager.getNotificationSound();
+        Uri alarmSound;
+        if (soundUriStr != null) {
+            alarmSound = Uri.parse(soundUriStr);
+        } else {
+            alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            if (alarmSound == null) {
+                alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            }
+        }
+
         // Create Channel for Android O+
+        // We append the sound string to channel ID to ensure a "new" channel is created if the sound changes,
+        // as channel properties (like sound) are immutable after creation.
+        String dynamicChannelId = CHANNEL_ID + (soundUriStr != null ? soundUriStr.hashCode() : "default");
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel(dynamicChannelId, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription("Channel for task reminders");
             channel.enableVibration(true);
             
@@ -29,7 +50,7 @@ public class NotificationHelper {
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
                     .build();
-            channel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE), audioAttributes);
+            channel.setSound(alarmSound, audioAttributes);
             
             notificationManager.createNotificationChannel(channel);
         }
@@ -42,15 +63,7 @@ public class NotificationHelper {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, taskId, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-        if (alarmSound == null) {
-            alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        }
-        if (alarmSound == null) {
-            alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        }
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, dynamicChannelId)
                 .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
                 .setContentTitle(title)
                 .setContentText(message)

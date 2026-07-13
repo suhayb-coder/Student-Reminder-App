@@ -23,36 +23,44 @@ public class AlarmHelper {
 
             // 1. Main Alarm (At due time)
             if (dueTimeMillis > currentTimeMillis) {
-                setAlarm(context, task, dueTimeMillis, task.getId(), "Due Now: " + task.getTitle());
+                setAlarm(context, task, dueTimeMillis, task.getId(), context.getString(R.string.due_now_msg, task.getTitle()), true);
             }
 
             // 2. Reminder 1 day before
             Calendar oneDayBefore = (Calendar) dueCalendar.clone();
             oneDayBefore.add(Calendar.DAY_OF_YEAR, -1);
             if (oneDayBefore.getTimeInMillis() > currentTimeMillis) {
-                setAlarm(context, task, oneDayBefore.getTimeInMillis(), task.getId() * 10 + 1, "Reminder (1 day left): " + task.getTitle());
+                setAlarm(context, task, oneDayBefore.getTimeInMillis(), task.getId() * 10 + 1, context.getString(R.string.reminder_1day, task.getTitle()), false);
             }
 
             // 3. Reminder 2 days before
             Calendar twoDaysBefore = (Calendar) dueCalendar.clone();
             twoDaysBefore.add(Calendar.DAY_OF_YEAR, -2);
             if (twoDaysBefore.getTimeInMillis() > currentTimeMillis) {
-                setAlarm(context, task, twoDaysBefore.getTimeInMillis(), task.getId() * 10 + 2, "Reminder (2 days left): " + task.getTitle());
+                setAlarm(context, task, twoDaysBefore.getTimeInMillis(), task.getId() * 10 + 2, context.getString(R.string.reminder_2days, task.getTitle()), false);
             }
 
-            Toast.makeText(context, "Reminders scheduled successfully", Toast.LENGTH_SHORT).show();
+            // 4. Reminder 3 days before
+            Calendar threeDaysBefore = (Calendar) dueCalendar.clone();
+            threeDaysBefore.add(Calendar.DAY_OF_YEAR, -3);
+            if (threeDaysBefore.getTimeInMillis() > currentTimeMillis) {
+                setAlarm(context, task, threeDaysBefore.getTimeInMillis(), task.getId() * 10 + 3, context.getString(R.string.reminder_3days, task.getTitle()), false);
+            }
+
+            Toast.makeText(context, R.string.reminders_scheduled, Toast.LENGTH_SHORT).show();
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "Failed to schedule reminders", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.reminders_failed, Toast.LENGTH_SHORT).show();
         }
     }
 
-    private static void setAlarm(Context context, Task task, long timeMillis, int requestCode, String customTitle) {
+    private static void setAlarm(Context context, Task task, long timeMillis, int requestCode, String customTitle, boolean isFinal) {
         Intent intent = new Intent(context, ReminderReceiver.class);
         intent.putExtra("TASK_TITLE", customTitle);
         intent.putExtra("TASK_DESC", task.getDescription());
         intent.putExtra("TASK_ID", task.getId());
+        intent.putExtra("IS_FINAL", isFinal);
 
         PendingIntent pi = PendingIntent.getBroadcast(context, requestCode, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
@@ -67,7 +75,7 @@ public class AlarmHelper {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (am == null) return;
 
-        int[] requestCodes = {taskId, taskId * 10 + 1, taskId * 10 + 2};
+        int[] requestCodes = {taskId, taskId * 10 + 1, taskId * 10 + 2, taskId * 10 + 3};
         for (int rc : requestCodes) {
             Intent intent = new Intent(context, ReminderReceiver.class);
             PendingIntent pi = PendingIntent.getBroadcast(context, rc, intent,

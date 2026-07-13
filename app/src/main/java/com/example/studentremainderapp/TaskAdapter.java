@@ -41,7 +41,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         Task task = tasks.get(position);
         holder.tvTitle.setText(task.getTitle());
-        holder.tvDateTime.setText("Due " + task.getDueTime());
+        holder.tvDateTime.setText(task.isCompleted() ? context.getString(R.string.done) : context.getString(R.string.not_done));
         holder.cbCompleted.setChecked(task.isCompleted());
 
         if (task.getDescription() != null && !task.getDescription().isEmpty()) {
@@ -55,19 +55,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         int priority = task.getPriority();
         if (priority == 2) { // High
             holder.priorityIndicator.setBackgroundResource(R.color.high_priority);
-            holder.tvPriorityBadge.setText("High Priority");
+            holder.tvPriorityBadge.setText(R.string.high_priority);
             holder.tvPriorityBadge.setBackgroundResource(R.drawable.bg_badge_high);
             holder.tvPriorityBadge.setTextColor(context.getColor(R.color.high_priority_text));
             holder.tvPriorityBadge.setVisibility(View.VISIBLE);
         } else if (priority == 1) { // Medium
             holder.priorityIndicator.setBackgroundResource(R.color.medium_priority);
-            holder.tvPriorityBadge.setText("Medium Priority");
+            holder.tvPriorityBadge.setText(R.string.medium_priority);
             holder.tvPriorityBadge.setBackgroundResource(R.drawable.bg_badge_medium);
             holder.tvPriorityBadge.setTextColor(context.getColor(R.color.medium_priority_text));
             holder.tvPriorityBadge.setVisibility(View.VISIBLE);
         } else { // Low
             holder.priorityIndicator.setBackgroundResource(R.color.low_priority);
-            holder.tvPriorityBadge.setText("Low Priority");
+            holder.tvPriorityBadge.setText(R.string.low_priority_badge);
             holder.tvPriorityBadge.setBackgroundResource(R.drawable.bg_badge_low);
             holder.tvPriorityBadge.setTextColor(context.getColor(R.color.low_priority_text));
             holder.tvPriorityBadge.setVisibility(View.VISIBLE);
@@ -76,9 +76,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         // Completed styling
         if (task.isCompleted()) {
             holder.tvTitle.setTextColor(Color.GRAY);
-            holder.tvDateTime.setText("Done yesterday");
             holder.tvTitle.setAlpha(0.6f);
-            holder.tvPriorityBadge.setText("Completed");
+            holder.tvPriorityBadge.setText(R.string.completed);
             holder.tvPriorityBadge.setBackgroundResource(R.drawable.bg_badge_low); // Neutral/Greyish would be better
             holder.tvPriorityBadge.setTextColor(Color.GRAY);
             holder.priorityIndicator.setBackgroundColor(Color.LTGRAY);

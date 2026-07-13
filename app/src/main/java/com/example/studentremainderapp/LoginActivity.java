@@ -19,6 +19,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         
         sessionManager = new SessionManager(this);
+        LocaleHelper.setLocale(this, sessionManager.getLanguage());
+        ThemeUtils.applyTheme(sessionManager);
+
         if (sessionManager.isLoggedIn()) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
@@ -44,18 +47,19 @@ public class LoginActivity extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.fill_fields, Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (dbHelper.checkUser(email, password)) {
             String name = dbHelper.getUserName(email);
             sessionManager.createLoginSession(name, email);
-            Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+            startService(new Intent(this, AppTerminatorService.class));
+            Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         } else {
-            Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.invalid_login, Toast.LENGTH_SHORT).show();
         }
     }
 }

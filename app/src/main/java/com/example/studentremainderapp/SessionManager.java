@@ -8,6 +8,11 @@ public class SessionManager {
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_NAME = "name";
+    private static final String KEY_LANGUAGE = "language";
+    private static final String KEY_DARK_MODE = "darkMode";
+    private static final String KEY_NOTIFICATIONS_ENABLED = "notificationsEnabled";
+    private static final String KEY_NOTIFICATION_SOUND = "notificationSound";
+    private static final String KEY_PROFILE_PIC = "profilePic";
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -44,8 +49,55 @@ public class SessionManager {
         return pref.getString(KEY_NAME, "User");
     }
 
+    public void setLanguage(String lang) {
+        editor.putString(KEY_LANGUAGE, lang);
+        editor.commit();
+    }
+
+    public String getLanguage() {
+        return pref.getString(KEY_LANGUAGE, "en"); // Default to English
+    }
+
+    public void setDarkMode(boolean isDark) {
+        editor.putBoolean(KEY_DARK_MODE, isDark);
+        editor.commit();
+    }
+
+    public boolean isDarkMode() {
+        return pref.getBoolean(KEY_DARK_MODE, false);
+    }
+
+    public void setNotificationsEnabled(boolean enabled) {
+        editor.putBoolean(KEY_NOTIFICATIONS_ENABLED, enabled);
+        editor.commit();
+    }
+
+    public boolean isNotificationsEnabled() {
+        return pref.getBoolean(KEY_NOTIFICATIONS_ENABLED, true);
+    }
+
+    public void setNotificationSound(String uri) {
+        editor.putString(KEY_NOTIFICATION_SOUND, uri);
+        editor.commit();
+    }
+
+    public String getNotificationSound() {
+        return pref.getString(KEY_NOTIFICATION_SOUND, null);
+    }
+
+    public void setProfilePic(String uri) {
+        editor.putString(KEY_PROFILE_PIC, uri);
+        editor.commit();
+    }
+
+    public String getProfilePic() {
+        return pref.getString(KEY_PROFILE_PIC, null);
+    }
+
     public void logoutUser() {
-        editor.clear();
+        editor.putBoolean(KEY_IS_LOGGED_IN, false);
+        editor.remove(KEY_NAME);
+        editor.remove(KEY_EMAIL);
         editor.commit();
     }
 }

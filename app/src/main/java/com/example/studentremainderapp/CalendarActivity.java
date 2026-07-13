@@ -23,10 +23,25 @@ public class CalendarActivity extends AppCompatActivity {
     private TaskAdapter taskAdapter;
     private DatabaseHelper dbHelper;
     private TextView tvSelectedDate, tvNoTasks;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        sessionManager = new SessionManager(this);
+        
+        if (!sessionManager.isLoggedIn()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        LocaleHelper.setLocale(this, sessionManager.getLanguage());
+        ThemeUtils.applyTheme(sessionManager);
+
         setContentView(R.layout.activity_calendar);
 
         dbHelper = new DatabaseHelper(this);
@@ -63,7 +78,23 @@ public class CalendarActivity extends AppCompatActivity {
             startActivity(new Intent(this, ProfileActivity.class));
         });
 
+        loadSmallProfilePic();
+
         setupNavigation();
+    }
+
+    private void loadSmallProfilePic() {
+        android.widget.ImageView btnProfile = findViewById(R.id.btnProfile);
+        String uriStr = sessionManager.getProfilePic();
+        if (uriStr != null) {
+            try {
+                btnProfile.setImageURI(android.net.Uri.parse(uriStr));
+                btnProfile.setPadding(0, 0, 0, 0);
+                btnProfile.setColorFilter(null);
+            } catch (Exception e) {
+                btnProfile.setImageResource(R.drawable.ic_account);
+            }
+        }
     }
 
     private void loadTasksForDate(String date) {

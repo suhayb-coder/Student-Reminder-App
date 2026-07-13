@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Branding -->
+    <color name="primary_color">#818CF8</color> <!-- Lighter Indigo for Dark Mode -->
+    <color name="primary_light">#1E293B</color>
+    <color name="secondary_color">#38BDF8</color>
+
+    <!-- Backgrounds -->
+    <color name="screen_bg_start">#0F172A</color>
+    <color name="screen_bg_end">#1E293B</color>
+    <color name="card_bg">#1E293B</color>
+    <color name="input_background">#334155</color>
+
+    <!-- Priorities (Dark Adjusted) -->
+    <color name="low_priority">#34D399</color>
+    <color name="low_priority_bg">#064E3B</color>
+    <color name="low_priority_text">#D1FAE5</color>
+
+    <color name="medium_priority">#FBBF24</color>
+    <color name="medium_priority_bg">#78350F</color>
+    <color name="medium_priority_text">#FEF3C7</color>
+
+    <color name="high_priority">#F87171</color>
+    <color name="high_priority_bg">#7F1D1D</color>
+    <color name="high_priority_text">#FEE2E2</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#F8FAFC</color>
+    <color name="text_secondary">#94A3B8</color>
+    <color name="text_hint">#64748B</color>
+</resources>

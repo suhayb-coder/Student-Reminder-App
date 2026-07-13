@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,10 +38,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        sessionManager = new SessionManager(this);
+        
+        if (!sessionManager.isLoggedIn()) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        LocaleHelper.setLocale(this, sessionManager.getLanguage());
+        ThemeUtils.applyTheme(sessionManager);
+        
         setContentView(R.layout.activity_main);
 
+        startService(new Intent(this, AppTerminatorService.class));
+
         dbHelper = new DatabaseHelper(this);
-        sessionManager = new SessionManager(this);
         
         recyclerView = findViewById(R.id.recyclerView);
         emptyStateText = findViewById(R.id.emptyStateText);
@@ -50,7 +66,9 @@ public class MainActivity extends AppCompatActivity {
         filterTabs = findViewById(R.id.filterTabs);
         FloatingActionButton fab = findViewById(R.id.fabAdd);
 
-        tvGreeting.setText("Hello, " + sessionManager.getName());
+        tvGreeting.setText(getString(R.string.hello) + ", " + sessionManager.getName());
+
+        loadSmallProfilePic();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         taskAdapter = new TaskAdapter(new ArrayList<>(), this);
@@ -68,6 +86,20 @@ public class MainActivity extends AppCompatActivity {
         setupTabs();
         setupNavigation();
         checkPermissions();
+    }
+
+    private void loadSmallProfilePic() {
+        ImageView btnProfile = findViewById(R.id.btnProfile);
+        String uriStr = sessionManager.getProfilePic();
+        if (uriStr != null) {
+            try {
+                btnProfile.setImageURI(Uri.parse(uriStr));
+                btnProfile.setPadding(0, 0, 0, 0);
+                btnProfile.setColorFilter(null);
+            } catch (Exception e) {
+                btnProfile.setImageResource(R.drawable.ic_account);
+            }
+        }
     }
 
     private void checkPermissions() {
@@ -114,14 +146,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupTabs() {
-        filterTabs.addTab(filterTabs.newTab().setText("All"));
-        filterTabs.addTab(filterTabs.newTab().setText("Pending"));
-        filterTabs.addTab(filterTabs.newTab().setText("Completed"));
+        filterTabs.addTab(filterTabs.newTab().setText(R.string.all));
+        filterTabs.addTab(filterTabs.newTab().setText(R.string.pending));
+        filterTabs.addTab(filterTabs.newTab().setText(R.string.completed));
 
         filterTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                loadTasks(tab.getText().toString());
+                String filter;
+                if (tab.getPosition() == 1) filter = "Pending";
+                else if (tab.getPosition() == 2) filter = "Completed";
+                else filter = "All";
+                loadTasks(filter);
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {}
@@ -134,11 +170,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         int selectedTab = filterTabs.getSelectedTabPosition();
-        if (selectedTab != -1) {
-            loadTasks(filterTabs.getTabAt(selectedTab).getText().toString());
-        } else {
-            loadTasks("All");
-        }
+        String filter = "All";
+        if (selectedTab == 1) filter = "Pending";
+        else if (selectedTab == 2) filter = "Completed";
+        
+        loadTasks(filter);
         updateProgress();
     }
 
@@ -165,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateProgress() {
         List<Task> allTasks = dbHelper.getAllTasks();
         if (allTasks.isEmpty()) {
-            tvProgressMsg.setText("Start adding tasks to track your progress!");
+            tvProgressMsg.setText(R.string.start_adding_tasks);
             weeklyProgressBar.setProgress(0);
             return;
         }
@@ -179,9 +215,9 @@ public class MainActivity extends AppCompatActivity {
         weeklyProgressBar.setProgress(percent);
 
         if (percent == 100) {
-            tvProgressMsg.setText("Great job! All tasks are completed.");
+            tvProgressMsg.setText(R.string.all_completed);
         } else {
-            tvProgressMsg.setText("You're on track! " + percent + "% of your assignments are done.");
+            tvProgressMsg.setText(getString(R.string.progress_status, percent));
         }
     }
 

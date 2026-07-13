@@ -16,6 +16,11 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        SessionManager sessionManager = new SessionManager(this);
+        LocaleHelper.setLocale(this, sessionManager.getLanguage());
+        ThemeUtils.applyTheme(sessionManager);
+
         setContentView(R.layout.activity_register);
 
         dbHelper = new DatabaseHelper(this);
@@ -35,16 +40,16 @@ public class RegisterActivity extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
 
         if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.fill_fields, Toast.LENGTH_SHORT).show();
             return;
         }
 
         long id = dbHelper.registerUser(name, email, password);
         if (id > 0) {
-            Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.reg_success, Toast.LENGTH_SHORT).show();
             finish();
         } else {
-            Toast.makeText(this, "Registration failed or user already exists", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.reg_failed, Toast.LENGTH_SHORT).show();
         }
     }
 }

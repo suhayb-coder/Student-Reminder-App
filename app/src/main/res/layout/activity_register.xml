@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Get Started"
+        android:text="@string/get_started"
         android:textColor="@color/text_primary"
         android:textSize="32sp"
         android:textStyle="bold" />
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Join the student task community"
+        android:text="@string/join_community"
         android:textColor="@color/text_secondary"
         android:textSize="16sp" />
 
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@drawable/bg_input_field"
-            android:hint="Full Name"
+            android:hint="@string/name"
             android:inputType="textPersonName"
             android:paddingHorizontal="20dp"
             android:textColor="@color/text_primary" />
@@ -62,7 +62,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_input_field"
-            android:hint="Email Address"
+            android:hint="@string/email_address"
             android:inputType="textEmailAddress"
             android:paddingHorizontal="20dp"
             android:textColor="@color/text_primary" />
@@ -73,7 +73,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_input_field"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:paddingHorizontal="20dp"
             android:textColor="@color/text_primary" />
@@ -84,7 +84,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="40dp"
             android:backgroundTint="@color/primary_color"
-            android:text="Create Account"
+            android:text="@string/create_account"
             android:textAllCaps="false"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="32dp"
-            android:text="Already a member? Sign In"
+            android:text="@string/already_member"
             android:textColor="@color/primary_color"
             android:textSize="16sp"
             android:textStyle="bold" />

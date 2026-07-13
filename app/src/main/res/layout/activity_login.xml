@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Welcome Back"
+        android:text="@string/welcome_back"
         android:textColor="@color/text_primary"
         android:textSize="32sp"
         android:textStyle="bold" />
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Please sign in to continue"
+        android:text="@string/sign_in_continue"
         android:textColor="@color/text_secondary"
         android:textSize="16sp" />
 
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@drawable/bg_input_field"
-            android:hint="Email Address"
+            android:hint="@string/email_address"
             android:inputType="textEmailAddress"
             android:paddingHorizontal="20dp"
             android:textColor="@color/text_primary" />
@@ -62,7 +62,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_input_field"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:paddingHorizontal="20dp"
             android:textColor="@color/text_primary" />
@@ -73,7 +73,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="40dp"
             android:backgroundTint="@color/primary_color"
-            android:text="Sign In"
+            android:text="@string/sign_in"
             android:textAllCaps="false"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="32dp"
-            android:text="New user? Create Account"
+            android:text="@string/not_member"
             android:textColor="@color/primary_color"
             android:textSize="16sp"
             android:textStyle="bold" />

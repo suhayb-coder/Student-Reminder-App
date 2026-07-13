@@ -31,6 +31,20 @@ public class AddEditTaskActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        SessionManager sessionManager = new SessionManager(this);
+        
+        if (!sessionManager.isLoggedIn()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        LocaleHelper.setLocale(this, sessionManager.getLanguage());
+        ThemeUtils.applyTheme(sessionManager);
+        
         setContentView(R.layout.activity_add_edit_task);
 
         dbHelper = new DatabaseHelper(this);
@@ -48,12 +62,12 @@ public class AddEditTaskActivity extends AppCompatActivity {
             isEditMode = true;
             int taskId = getIntent().getIntExtra("TASK_ID", -1);
             currentTask = dbHelper.getTaskById(taskId);
-            tvHeaderTitle.setText("Edit Task");
+            tvHeaderTitle.setText(R.string.edit_task);
             btnDelete.setVisibility(View.VISIBLE);
             populateFields();
         } else {
             isEditMode = false;
-            tvHeaderTitle.setText("Add Task");
+            tvHeaderTitle.setText(R.string.add_task_title);
             btnDelete.setVisibility(View.GONE);
             priorityToggleGroup.check(R.id.btnLow); // Default
         }
@@ -103,7 +117,7 @@ public class AddEditTaskActivity extends AppCompatActivity {
         if (currentTask != null) {
             dbHelper.deleteTask(currentTask.getId());
             AlarmHelper.cancelTaskAlarms(this, currentTask.getId());
-            Toast.makeText(this, "Task deleted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.task_deleted, Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -115,7 +129,7 @@ public class AddEditTaskActivity extends AppCompatActivity {
         String time = etTime.getText().toString();
 
         if (title.isEmpty() || date.isEmpty() || time.isEmpty()) {
-            Toast.makeText(this, "Please fill required fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.fill_required, Toast.LENGTH_SHORT).show();
             return;
         }
 

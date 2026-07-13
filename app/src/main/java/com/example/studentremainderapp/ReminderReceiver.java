@@ -16,7 +16,7 @@ public class ReminderReceiver extends BroadcastReceiver {
         NotificationHelper.showNotification(context, title, description, taskId);
 
         // Mark task as completed if it's the main alarm (due now)
-        if (title != null && title.startsWith("Due Now:")) {
+        if (intent.getBooleanExtra("IS_FINAL", false)) {
             DatabaseHelper dbHelper = new DatabaseHelper(context);
             Task task = dbHelper.getTaskById(taskId);
             if (task != null) {

@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="My Profile"
+                android:text="@string/my_profile"
                 android:textColor="@color/primary_color"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -50,11 +50,13 @@
                 app:cardElevation="8dp">
 
                 <ImageView
+                    android:id="@+id/ivProfilePic"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_account"
                     android:padding="20dp"
                     android:background="@color/primary_light"
+                    android:scaleType="centerCrop"
                     app:tint="@color/primary_color" />
             </androidx.cardview.widget.CardView>
 
@@ -106,7 +108,7 @@
             android:layout_height="60dp"
             android:layout_margin="32dp"
             android:backgroundTint="@color/high_priority_bg"
-            android:text="Log Out"
+            android:text="@string/logout"
             android:textAllCaps="false"
             android:textColor="@color/high_priority_text"
             android:textSize="18sp"
