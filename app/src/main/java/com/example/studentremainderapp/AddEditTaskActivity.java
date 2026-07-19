@@ -18,13 +18,14 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class AddEditTaskActivity extends AppCompatActivity {
+public class AddEditTaskActivity extends BaseActivity {
 
     private EditText etTitle, etDescription, etDate, etTime;
     private MaterialButtonToggleGroup priorityToggleGroup;
     private TextView tvHeaderTitle;
     private ImageView btnDelete;
     private DatabaseHelper dbHelper;
+    private SessionManager sessionManager;
     private Task currentTask;
     private boolean isEditMode = false;
 
@@ -32,7 +33,7 @@ public class AddEditTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        SessionManager sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(this);
         
         if (!sessionManager.isLoggedIn()) {
             Intent intent = new Intent(this, LoginActivity.class);
@@ -42,9 +43,6 @@ public class AddEditTaskActivity extends AppCompatActivity {
             return;
         }
 
-        LocaleHelper.setLocale(this, sessionManager.getLanguage());
-        ThemeUtils.applyTheme(sessionManager);
-        
         setContentView(R.layout.activity_add_edit_task);
 
         dbHelper = new DatabaseHelper(this);
@@ -146,12 +144,13 @@ public class AddEditTaskActivity extends AppCompatActivity {
             currentTask.setPriority(priority);
             dbHelper.updateTask(currentTask);
         } else {
-            currentTask = new Task(title, desc, date, time, priority);
+            int userId = sessionManager.getUserId();
+            currentTask = new Task(userId, title, desc, date, time, priority);
             long id = dbHelper.insertTask(currentTask);
             currentTask.setId((int) id);
         }
 
-        AlarmHelper.scheduleTaskAlarms(this, currentTask);
+        AlarmHelper.scheduleTaskAlarms(this, currentTask, true);
         finish();
     }
 

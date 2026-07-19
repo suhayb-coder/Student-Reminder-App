@@ -8,15 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class HelpSupportActivity extends AppCompatActivity {
+public class HelpSupportActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         SessionManager sessionManager = new SessionManager(this);
-        LocaleHelper.setLocale(this, sessionManager.getLanguage());
-        ThemeUtils.applyTheme(sessionManager);
 
         if (!sessionManager.isLoggedIn()) {
             Intent intent = new Intent(this, LoginActivity.class);

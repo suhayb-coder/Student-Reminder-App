@@ -13,10 +13,10 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             DatabaseHelper dbHelper = new DatabaseHelper(context);
-            List<Task> pendingTasks = dbHelper.getTasksByStatus(false);
+            List<Task> pendingTasks = dbHelper.getAllPendingTasks();
 
             for (Task task : pendingTasks) {
-                AlarmHelper.scheduleTaskAlarms(context, task);
+                AlarmHelper.scheduleTaskAlarms(context, task, false);
             }
         }
     }

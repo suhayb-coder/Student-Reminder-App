@@ -8,7 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     private EditText etName, etEmail, etPassword;
     private DatabaseHelper dbHelper;
@@ -17,10 +17,6 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        SessionManager sessionManager = new SessionManager(this);
-        LocaleHelper.setLocale(this, sessionManager.getLanguage());
-        ThemeUtils.applyTheme(sessionManager);
-
         setContentView(R.layout.activity_register);
 
         dbHelper = new DatabaseHelper(this);

@@ -15,7 +15,7 @@
     <string name="calendar">Kalenda</string>
     <string name="logout">Ondoka</string>
     <string name="student_tasks">Kazi za Wanafunzi</string>
-    <string name="hello">Habari</string>
+    <string name="hello">Habari, %1$s</string>
     <string name="keep_up_work">Endelea na kazi nzuri!</string>
     <string name="your_progress">Maendeleo Yako</string>
     <string name="no_tasks_found">Hakuna kazi zilizopatikana</string>
@@ -42,7 +42,6 @@
     <string name="profile_updated">Wasifu umesasishwa kwa mafanikio</string>
     <string name="failed_update">Imeshindwa kusasisha wasifu</string>
     <string name="email_in_use">Barua pepe tayari inatumiwa</string>
-    <string name="valid_email">Tafadhali weka barua pepe sahihi</string>
     <string name="no_tasks_for_date">Hakuna kazi za tarehe hii</string>
     <string name="sign_in">Ingia</string>
     <string name="get_started">Anza</string>
@@ -105,7 +104,7 @@
     <string name="feature_4">• Hali ya Giza na Sauti Zinazoweza Kubadilishwa</string>
     <string name="contact_us">Wasiliana Nasi</string>
     <string name="github">Wasifu wa GitHub</string>
-    <string name="copyright">© 2024 Programu ya Vikumbusho vya Wanafunzi</string>
+    <string name="copyright">© 2026 Programu ya Vikumbusho vya Wanafunzi</string>
     <string name="faqs">Maswali Yanayoulizwa Mara kwa Mara</string>
     <string name="q1">Ninawezaje kuongeza kazi?</string>
     <string name="a1">Gonga kitufe cha kuongeza (+) kwenye dashibodi, weka maelezo ya kazi yako, na uhifadhi.</string>

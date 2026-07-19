@@ -10,10 +10,12 @@ public class Task implements Serializable {
     private String dueTime;
     private int priority; // 0: Low, 1: Medium, 2: High
     private boolean isCompleted;
+    private int userId;
 
     public Task() {}
 
-    public Task(String title, String description, String dueDate, String dueTime, int priority) {
+    public Task(int userId, String title, String description, String dueDate, String dueTime, int priority) {
+        this.userId = userId;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -43,5 +45,8 @@ public class Task implements Serializable {
 
     public boolean isCompleted() { return isCompleted; }
     public void setCompleted(boolean completed) { isCompleted = completed; }
+
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
 
 }

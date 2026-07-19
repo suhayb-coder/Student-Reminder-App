@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
-public class NotificationSettingsActivity extends AppCompatActivity {
+public class NotificationSettingsActivity extends BaseActivity {
 
     private SessionManager sessionManager;
     private TextView tvCurrentSound;
@@ -21,8 +21,6 @@ public class NotificationSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         
         sessionManager = new SessionManager(this);
-        LocaleHelper.setLocale(this, sessionManager.getLanguage());
-        ThemeUtils.applyTheme(sessionManager);
 
         if (!sessionManager.isLoggedIn()) {
             Intent intent = new Intent(this, LoginActivity.class);

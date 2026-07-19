@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class CalendarActivity extends AppCompatActivity {
+public class CalendarActivity extends BaseActivity {
 
     private CalendarView calendarView;
     private RecyclerView recyclerView;
@@ -38,9 +38,6 @@ public class CalendarActivity extends AppCompatActivity {
             finish();
             return;
         }
-
-        LocaleHelper.setLocale(this, sessionManager.getLanguage());
-        ThemeUtils.applyTheme(sessionManager);
 
         setContentView(R.layout.activity_calendar);
 
@@ -98,7 +95,8 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     private void loadTasksForDate(String date) {
-        List<Task> tasks = dbHelper.getTasksByDate(date);
+        int userId = sessionManager.getUserId();
+        List<Task> tasks = dbHelper.getTasksByDate(userId, date);
         if (tasks.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             tvNoTasks.setVisibility(View.VISIBLE);

@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
 
     private SessionManager sessionManager;
 
@@ -27,9 +27,6 @@ public class SettingsActivity extends AppCompatActivity {
             finish();
             return;
         }
-
-        LocaleHelper.setLocale(this, sessionManager.getLanguage());
-        ThemeUtils.applyTheme(sessionManager);
 
         setContentView(R.layout.activity_settings);
 

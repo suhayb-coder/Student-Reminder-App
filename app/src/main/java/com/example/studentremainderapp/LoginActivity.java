@@ -8,7 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private EditText etEmail, etPassword;
     private DatabaseHelper dbHelper;
@@ -19,14 +19,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         
         sessionManager = new SessionManager(this);
-        LocaleHelper.setLocale(this, sessionManager.getLanguage());
-        ThemeUtils.applyTheme(sessionManager);
-
-        if (sessionManager.isLoggedIn()) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
-            return;
-        }
 
         setContentView(R.layout.activity_login);
 
@@ -52,12 +44,16 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (dbHelper.checkUser(email, password)) {
-            String name = dbHelper.getUserName(email);
-            sessionManager.createLoginSession(name, email);
-            startService(new Intent(this, AppTerminatorService.class));
-            Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
+            User user = dbHelper.getUser(email);
+            if (user != null) {
+                sessionManager.createLoginSession(user.getId(), user.getName(), user.getEmail());
+                startService(new Intent(this, AppTerminatorService.class));
+                Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            } else {
+                Toast.makeText(this, "Fetch failed", Toast.LENGTH_SHORT).show();
+            }
         } else {
             Toast.makeText(this, R.string.invalid_login, Toast.LENGTH_SHORT).show();
         }

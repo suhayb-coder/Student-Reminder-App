@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends BaseActivity {
 
     private EditText etName, etEmail;
     private ImageView ivProfilePic;
@@ -34,9 +34,6 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
 
-        LocaleHelper.setLocale(this, sessionManager.getLanguage());
-        ThemeUtils.applyTheme(sessionManager);
-        
         setContentView(R.layout.activity_edit_profile);
 
         dbHelper = new DatabaseHelper(this);
@@ -105,26 +102,46 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
 
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, R.string.valid_email, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         if (dbHelper.isEmailExists(email, currentEmail)) {
             Toast.makeText(this, R.string.email_in_use, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        int result = dbHelper.updateUser(currentEmail, name, email);
+        int userId = sessionManager.getUserId();
+        int result = -1;
+
+        if (userId != -1) {
+            result = dbHelper.updateUser(userId, name, email);
+        }
+        
+        // If update by ID failed or ID was missing, try updating by the email we started with
+        if (result <= 0) {
+            result = dbHelper.updateUserByEmail(currentEmail, name, email);
+        }
+
         if (result > 0) {
+            // After successful DB update, we need to refresh the session manager with NEW values
+            // and update our local currentEmail for any subsequent clicks without closing activity
             sessionManager.updateSession(name, email);
+            
+            // Critical: If the user changed their email, we must update the userId in session 
+            // if it was missing (-1) by fetching it now with the new email.
+            if (userId == -1) {
+                User user = dbHelper.getUser(email);
+                if (user != null) {
+                    sessionManager.createLoginSession(user.getId(), name, email);
+                }
+            }
+            
+            currentEmail = email; 
+            
             if (selectedImageUri != null) {
                 sessionManager.setProfilePic(selectedImageUri);
             }
             Toast.makeText(this, R.string.profile_updated, Toast.LENGTH_SHORT).show();
             finish();
         } else {
-            Toast.makeText(this, R.string.failed_update, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Update failed. Error details: ID=" + userId + ", Email=" + currentEmail, Toast.LENGTH_LONG).show();
         }
     }
 }

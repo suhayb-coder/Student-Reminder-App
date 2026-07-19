@@ -8,6 +8,7 @@ public class SessionManager {
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_NAME = "name";
+    private static final String KEY_USER_ID = "userId";
     private static final String KEY_LANGUAGE = "language";
     private static final String KEY_DARK_MODE = "darkMode";
     private static final String KEY_NOTIFICATIONS_ENABLED = "notificationsEnabled";
@@ -20,15 +21,20 @@ public class SessionManager {
 
     public SessionManager(Context context) {
         this.context = context;
-        pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        pref = context.getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = pref.edit();
     }
 
-    public void createLoginSession(String name, String email) {
+    public void createLoginSession(int userId, String name, String email) {
         editor.putBoolean(KEY_IS_LOGGED_IN, true);
+        editor.putInt(KEY_USER_ID, userId);
         editor.putString(KEY_NAME, name);
         editor.putString(KEY_EMAIL, email);
         editor.commit();
+    }
+
+    public int getUserId() {
+        return pref.getInt(KEY_USER_ID, -1);
     }
 
     public void updateSession(String name, String email) {
@@ -98,6 +104,7 @@ public class SessionManager {
         editor.putBoolean(KEY_IS_LOGGED_IN, false);
         editor.remove(KEY_NAME);
         editor.remove(KEY_EMAIL);
+        editor.remove(KEY_USER_ID);
         editor.commit();
     }
 }

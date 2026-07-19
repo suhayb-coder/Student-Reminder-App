@@ -23,7 +23,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final int PERMISSION_REQUEST_CODE = 1001;
     private DatabaseHelper dbHelper;
@@ -49,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        LocaleHelper.setLocale(this, sessionManager.getLanguage());
-        ThemeUtils.applyTheme(sessionManager);
-        
         setContentView(R.layout.activity_main);
 
         startService(new Intent(this, AppTerminatorService.class));
@@ -66,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         filterTabs = findViewById(R.id.filterTabs);
         FloatingActionButton fab = findViewById(R.id.fabAdd);
 
-        tvGreeting.setText(getString(R.string.hello) + ", " + sessionManager.getName());
+        tvGreeting.setText(getString(R.string.hello, sessionManager.getName()));
 
         loadSmallProfilePic();
 
@@ -179,13 +176,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadTasks(String filter) {
+        int userId = sessionManager.getUserId();
         List<Task> tasks;
         if (filter.equals("Pending")) {
-            tasks = dbHelper.getTasksByStatus(false);
+            tasks = dbHelper.getTasksByStatus(userId, false);
         } else if (filter.equals("Completed")) {
-            tasks = dbHelper.getTasksByStatus(true);
+            tasks = dbHelper.getTasksByStatus(userId, true);
         } else {
-            tasks = dbHelper.getAllTasks();
+            tasks = dbHelper.getAllTasks(userId);
         }
 
         if (tasks.isEmpty()) {
@@ -199,7 +197,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateProgress() {
-        List<Task> allTasks = dbHelper.getAllTasks();
+        int userId = sessionManager.getUserId();
+        List<Task> allTasks = dbHelper.getAllTasks(userId);
         if (allTasks.isEmpty()) {
             tvProgressMsg.setText(R.string.start_adding_tasks);
             weeklyProgressBar.setProgress(0);

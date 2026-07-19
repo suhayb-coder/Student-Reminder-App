@@ -15,7 +15,7 @@
     <string name="calendar">Calendar</string>
     <string name="logout">Log Out</string>
     <string name="student_tasks">Student Tasks</string>
-    <string name="hello">Hello</string>
+    <string name="hello">Hello, %1$s</string>
     <string name="keep_up_work">Keep up the great work!</string>
     <string name="your_progress">Your Progress</string>
     <string name="no_tasks_found">No tasks found</string>
@@ -42,7 +42,6 @@
     <string name="profile_updated">Profile updated successfully</string>
     <string name="failed_update">Failed to update profile</string>
     <string name="email_in_use">Email already in use</string>
-    <string name="valid_email">Please enter a valid email</string>
     <string name="no_tasks_for_date">No tasks for this date</string>
     <string name="sign_in">Sign In</string>
     <string name="get_started">Get Started</string>
@@ -105,7 +104,7 @@
     <string name="feature_4">• Dark Mode &amp; Customizable Sounds</string>
     <string name="contact_us">Contact Us</string>
     <string name="github">GitHub Profile</string>
-    <string name="copyright">© 2024 Student Remainder App</string>
+    <string name="copyright">© 2026 Student Remainder App</string>
     <string name="faqs">FAQs</string>
     <string name="q1">How do I add a task?</string>
     <string name="a1">Tap the plus button on the dashboard, enter your task details, and hit save.</string>

@@ -9,7 +9,7 @@ import java.util.Calendar;
 
 public class AlarmHelper {
 
-    public static void scheduleTaskAlarms(Context context, Task task) {
+    public static void scheduleTaskAlarms(Context context, Task task, boolean showToast) {
         try {
             String[] d = task.getDueDate().split("-");
             String[] t = task.getDueTime().split(":");
@@ -47,11 +47,15 @@ public class AlarmHelper {
                 setAlarm(context, task, threeDaysBefore.getTimeInMillis(), task.getId() * 10 + 3, context.getString(R.string.reminder_3days, task.getTitle()), false);
             }
 
-            Toast.makeText(context, R.string.reminders_scheduled, Toast.LENGTH_SHORT).show();
+            if (showToast) {
+                Toast.makeText(context, R.string.reminders_scheduled, Toast.LENGTH_SHORT).show();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, R.string.reminders_failed, Toast.LENGTH_SHORT).show();
+            if (showToast) {
+                Toast.makeText(context, R.string.reminders_failed, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

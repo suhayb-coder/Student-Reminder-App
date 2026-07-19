@@ -12,7 +12,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "student_remainder.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3; // Incremented version to add user_id column
 
     // Table Tasks
     public static final String TABLE_TASKS = "tasks";
@@ -23,6 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_DUE_TIME = "due_time";
     public static final String COLUMN_PRIORITY = "priority";
     public static final String COLUMN_IS_COMPLETED = "is_completed";
+    public static final String COLUMN_TASK_USER_ID = "user_id";
     public static final String COLUMN_CREATED_AT = "created_at";
 
     // Table Users
@@ -40,6 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_DUE_TIME + " TEXT NOT NULL,"
             + COLUMN_PRIORITY + " INTEGER DEFAULT 0,"
             + COLUMN_IS_COMPLETED + " INTEGER DEFAULT 0,"
+            + COLUMN_TASK_USER_ID + " INTEGER,"
             + COLUMN_CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP"
             + ")";
 
@@ -51,7 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + ")";
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context.getApplicationContext(), DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -64,6 +66,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
             db.execSQL(CREATE_TABLE_USERS);
+        }
+        if (oldVersion < 3) {
+            db.execSQL("ALTER TABLE " + TABLE_TASKS + " ADD COLUMN " + COLUMN_TASK_USER_ID + " INTEGER DEFAULT -1");
         }
     }
 
@@ -106,22 +111,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-    public String getUserName(String email) {
+    public User getUser(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_USERS, new String[]{COLUMN_USER_NAME}, COLUMN_USER_EMAIL + "=?", new String[]{email}, null, null, null);
+        Cursor cursor = db.query(TABLE_USERS, null, COLUMN_USER_EMAIL + "=?", new String[]{email}, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
-            String name = cursor.getString(0);
+            User user = new User();
+            user.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID)));
+            user.setName(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_NAME)));
+            user.setEmail(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_EMAIL)));
             cursor.close();
-            return name;
+            return user;
         }
-        return "User";
+        return null;
     }
 
-    public int updateUser(String oldEmail, String newName, String newEmail) {
+    public int updateUser(int userId, String newName, String newEmail) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_NAME, newName);
         values.put(COLUMN_USER_EMAIL, newEmail);
+        
+        return db.update(TABLE_USERS, values, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(userId)});
+    }
+
+    public int updateUserByEmail(String oldEmail, String newName, String newEmail) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_NAME, newName);
+        values.put(COLUMN_USER_EMAIL, newEmail);
+        
         return db.update(TABLE_USERS, values, COLUMN_USER_EMAIL + " = ?", new String[]{oldEmail});
     }
 
@@ -136,6 +154,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DUE_TIME, task.getDueTime());
         values.put(COLUMN_PRIORITY, task.getPriority());
         values.put(COLUMN_IS_COMPLETED, task.isCompleted() ? 1 : 0);
+        values.put(COLUMN_TASK_USER_ID, task.getUserId());
         return db.insert(TABLE_TASKS, null, values);
     }
 
@@ -148,6 +167,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DUE_TIME, task.getDueTime());
         values.put(COLUMN_PRIORITY, task.getPriority());
         values.put(COLUMN_IS_COMPLETED, task.isCompleted() ? 1 : 0);
+        values.put(COLUMN_TASK_USER_ID, task.getUserId());
         return db.update(TABLE_TASKS, values, COLUMN_ID + " = ?", new String[]{String.valueOf(task.getId())});
     }
 
@@ -156,10 +176,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_TASKS, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
     }
 
-    public List<Task> getAllTasks() {
+    public List<Task> getAllTasks(int userId) {
         List<Task> tasks = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_TASKS + " ORDER BY " + COLUMN_DUE_DATE + " ASC", null);
+        Cursor cursor = db.query(TABLE_TASKS, null, COLUMN_TASK_USER_ID + "=?", new String[]{String.valueOf(userId)}, null, null, COLUMN_DUE_DATE + " ASC");
         if (cursor.moveToFirst()) {
             do {
                 tasks.add(cursorToTask(cursor));
@@ -180,10 +200,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public List<Task> getTasksByStatus(boolean isCompleted) {
+    public List<Task> getTasksByStatus(int userId, boolean isCompleted) {
         List<Task> tasks = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_TASKS, null, COLUMN_IS_COMPLETED + "=?", new String[]{isCompleted ? "1" : "0"}, null, null, COLUMN_DUE_DATE + " ASC");
+        Cursor cursor = db.query(TABLE_TASKS, null, COLUMN_TASK_USER_ID + "=? AND " + COLUMN_IS_COMPLETED + "=?", 
+                new String[]{String.valueOf(userId), isCompleted ? "1" : "0"}, null, null, COLUMN_DUE_DATE + " ASC");
         if (cursor.moveToFirst()) {
             do {
                 tasks.add(cursorToTask(cursor));
@@ -193,10 +214,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return tasks;
     }
 
-    public List<Task> getTasksByDate(String date) {
+    public List<Task> getAllPendingTasks() {
         List<Task> tasks = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_TASKS, null, COLUMN_DUE_DATE + "=?", new String[]{date}, null, null, COLUMN_DUE_TIME + " ASC");
+        Cursor cursor = db.query(TABLE_TASKS, null, COLUMN_IS_COMPLETED + "=?", 
+                new String[]{"0"}, null, null, COLUMN_DUE_DATE + " ASC");
+        if (cursor.moveToFirst()) {
+            do {
+                tasks.add(cursorToTask(cursor));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return tasks;
+    }
+
+    public List<Task> getTasksByDate(int userId, String date) {
+        List<Task> tasks = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_TASKS, null, COLUMN_TASK_USER_ID + "=? AND " + COLUMN_DUE_DATE + "=?", 
+                new String[]{String.valueOf(userId), date}, null, null, COLUMN_DUE_TIME + " ASC");
         if (cursor.moveToFirst()) {
             do {
                 tasks.add(cursorToTask(cursor));
@@ -215,6 +251,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         task.setDueTime(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DUE_TIME)));
         task.setPriority(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PRIORITY)));
         task.setCompleted(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_COMPLETED)) == 1);
+        task.setUserId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_TASK_USER_ID)));
         return task;
     }
 }
